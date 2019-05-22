@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// User entity
 type User struct {
 	ID          int       `gorm:"Column:id;PRIMARY_KEY;AUTO_INCREMENT" json:"id"`
 	DisplayName string    `gorm:"Column:displayName;NOT NULL" json:"displayName"`
@@ -13,4 +14,9 @@ type User struct {
 	Avatar      string    `gorm:"Column:avatar" json:"avatar"`
 	CreatedAt   time.Time `gorm:"Column:createdAt" json:"createdAt"`
 	UpdatedAt   time.Time `gorm:"Column:updatedAt" json:"updatedAt"`
+}
+
+// TableName of User entity for ORM
+func (User) TableName() string {
+	return "user"
 }

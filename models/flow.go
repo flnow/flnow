@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// Flow entity
 type Flow struct {
 	ID                  int       `gorm:"Column:id;PRIMARY_KEY;AUTO_INCREMENT" json:"id"`
 	Name                string    `gorm:"Column:name;NOT NULL" json:"name"`
@@ -23,4 +24,9 @@ type Flow struct {
 	Comment   string    `gorm:"Column:comment;size:32768" json:"comment"`
 	CreatedAt time.Time `gorm:"Column:createdAt" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"Column:updatedAt" json:"updatedAt"`
+}
+
+// TableName of Flow entity for ORM
+func (Flow) TableName() string {
+	return "flow"
 }
