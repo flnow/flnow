@@ -14,3 +14,6 @@
 # IDE
 .vscode
 .idea
+
+# Golang
+go.sum
