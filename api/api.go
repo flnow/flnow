@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/flnow/flnow/api/routers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-
-	"github.com/flnow/flnow/api/routers"
 )
 
 func init() {
@@ -22,13 +21,33 @@ func Run() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
 	// Routes
-	e.Any("/healthcheck", routers.HealthCheck)
+	e.GET("/healthcheck", routers.HealthCheck)
+	e.GET("/rts", func(ctx echo.Context) error {
+		return ctx.JSON(http.StatusOK, e.Routes())
+	})
 	e.GET("/", hello)
 
+	authGroup := e.Group("")
+	// TODO: Auth Module
+	// authGroup.Use(middleware.JWT([]byte("secret")))
+	// authGroup.GET("/auth_hello", hello)
+	// authGroup.GET("/test", func(ctx echo.Context) error {
+	// 	user := ctx.Get("user").(*jwt.Token)
+	// 	claims := user.Claims.(jwt.MapClaims)
+	// 	name := claims["name"].(string)
+	// 	return ctx.String(http.StatusOK, "Welcome "+name+"!")
+	// })
+
+	flowGroup := authGroup.Group("/flows")
+	nodeGroup := authGroup.Group("/nodes")
+	pluginGroup := authGroup.Group("/plugins")
+	systemGroup := authGroup.Group("/sys")
+
 	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8081"))
 }
 
 // Handler

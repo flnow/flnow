@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // HealthCheck to know is http server alive
