@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/flnow/flnow/api/routers"
+	"github.com/flnow/flnow/api/routes"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -24,7 +24,7 @@ func Run() {
 	e.Use(middleware.CORS())
 
 	// Routes
-	e.GET("/healthcheck", routers.HealthCheck)
+	e.GET("/healthcheck", routes.HealthCheck)
 	e.GET("/rts", func(ctx echo.Context) error {
 		return ctx.JSON(http.StatusOK, e.Routes())
 	})
@@ -41,10 +41,14 @@ func Run() {
 	// 	return ctx.String(http.StatusOK, "Welcome "+name+"!")
 	// })
 
+	//Flow biz
 	flowGroup := authGroup.Group("/flows")
-	nodeGroup := authGroup.Group("/nodes")
-	pluginGroup := authGroup.Group("/plugins")
-	systemGroup := authGroup.Group("/sys")
+
+	flowGroup.POST("/create", nil)
+
+	// nodeGroup := authGroup.Group("/nodes")
+	// pluginGroup := authGroup.Group("/plugins")
+	// systemGroup := authGroup.Group("/sys")
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8081"))
