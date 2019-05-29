@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 // Flow entity
 type Flow struct {
@@ -29,4 +33,9 @@ type Flow struct {
 // TableName of Flow entity for ORM
 func (Flow) TableName() string {
 	return "flow"
+}
+
+// Create a new Flow
+func (f *Flow) Create() *gorm.DB {
+	return DatabaseEngine.Create(f)
 }

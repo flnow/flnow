@@ -4,6 +4,10 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mssql"    // For mssql supported
+	_ "github.com/jinzhu/gorm/dialects/mysql"    // For mysql supported
+	_ "github.com/jinzhu/gorm/dialects/postgres" // For postgres supported
+	_ "github.com/jinzhu/gorm/dialects/sqlite"   // For sqlite supported
 )
 
 var (
@@ -16,6 +20,23 @@ var (
 )
 
 func init() {
-	DatabaseEngine, _ = gorm.Open(strings.ToLower(DatabaseType), DatabaseConnection)
-	DatabaseEngine = DatabaseEngine
+	// DatabaseEngine.DB().SetMaxOpenConns(10)
+
+	// Sync tables
+	engineInit()
+}
+
+func engineInit() (err error) {
+
+	DatabaseEngine, err = gorm.Open(strings.ToLower(DatabaseType), DatabaseConnection)
+	defer DatabaseEngine.Close()
+	if err != nil {
+		return err
+	}
+
+	if !DatabaseEngine.HasTable(&Flow{}) {
+		DatabaseEngine.CreateTable(&Flow{})
+	}
+
+	return err
 }
