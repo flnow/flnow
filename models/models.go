@@ -1,6 +1,7 @@
 package models
 
 import (
+	"log"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -23,7 +24,9 @@ func init() {
 	// DatabaseEngine.DB().SetMaxOpenConns(10)
 
 	// Sync tables
-	engineInit()
+	if err := engineInit(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func engineInit() (err error) {

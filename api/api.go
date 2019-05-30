@@ -44,7 +44,7 @@ func Run() {
 	//Flow biz
 	flowGroup := authGroup.Group("/flows")
 
-	flowGroup.POST("/create", nil)
+	flowGroup.POST("/create", routes.CreateFlow)
 
 	// nodeGroup := authGroup.Group("/nodes")
 	// pluginGroup := authGroup.Group("/plugins")

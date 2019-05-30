@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Create flow data
-func Create(c echo.Context) (err error) {
+// CreateFlow to create flow data
+func CreateFlow(c echo.Context) (err error) {
 	// 数据验证 && 数据创建 && 跳转到详情页
 	flow := new(models.Flow)
 	if err = c.Bind(flow); err != nil {
