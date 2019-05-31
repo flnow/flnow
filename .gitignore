@@ -17,3 +17,6 @@
 
 # Golang
 go.sum
+
+# Config
+configs/conf.yml
