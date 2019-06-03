@@ -8,6 +8,6 @@ import (
 )
 
 func main() {
-	fmt.Println("FL(N)OW")
+	fmt.Println("FL(N)OW!")
 	api.Run()
 }

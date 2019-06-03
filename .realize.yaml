@@ -16,8 +16,8 @@ settings:
     force: false
     interval: 0s
 schema:
-  - name: /Users/kumamon/go/src/github.com/flnow/flnow
-    path: /Users/kumamon/go/src/github.com/flnow/flnow
+  - name: Flnow
+    path: /mnt/c/Users/guotu/desktop/develop/go/src/github.com/flnow/flnow
     commands:
       fmt:
         status: true

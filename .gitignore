@@ -20,3 +20,4 @@ go.sum
 
 # Config
 configs/conf.yml
+configs/flnow.yml

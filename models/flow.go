@@ -17,15 +17,15 @@ type Flow struct {
 	Token               string    `gorm:"Column:token;size:255" json:"-"`
 	NodeCount           int       `gorm:"Column:nodeCount" json:"nodeCount"`
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt"`
-	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;size:32768" json:"lastExecutedSummary"`
-	RunAt               string    `gorm:"Column:runAt;size:32768;DEFAULT:ALL" json:"runAt"`
+	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary"`
+	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt"`
 	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn"`
 	Pointer             string    `gorm:"Column:pointer" json:"-"`
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
-	Tags  string `gorm:"Column:tags;size:32768" json:"tags"`
+	Tags  string `gorm:"Column:tags;type:text" json:"tags"`
 
-	Comment   string    `gorm:"Column:comment;size:32768" json:"comment"`
+	Comment   string    `gorm:"Column:comment;type:text" json:"comment"`
 	CreatedAt time.Time `gorm:"Column:createdAt" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"Column:updatedAt" json:"updatedAt"`
 }

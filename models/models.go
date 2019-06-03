@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -8,7 +9,9 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mssql"    // For mssql supported
 	_ "github.com/jinzhu/gorm/dialects/mysql"    // For mysql supported
 	_ "github.com/jinzhu/gorm/dialects/postgres" // For postgres supported
-	_ "github.com/jinzhu/gorm/dialects/sqlite"   // For sqlite supported
+	//_ "github.com/jinzhu/gorm/dialects/sqlite"   // For sqlite supported
+
+	"github.com/flnow/flnow/utils"
 )
 
 var (
@@ -30,8 +33,11 @@ func init() {
 }
 
 func engineInit() (err error) {
-
-	DatabaseEngine, err = gorm.Open(strings.ToLower(DatabaseType), DatabaseConnection)
+	fmt.Println("123")
+	fmt.Println(utils.FlnowConf.Database.Type)
+	fmt.Println("456")
+	DatabaseEngine, err = gorm.Open(strings.ToLower(utils.FlnowConf.Database.Type), utils.FlnowConf.Database.Connection)
+	DatabaseEngine.LogMode(true)
 	defer DatabaseEngine.Close()
 	if err != nil {
 		return err
