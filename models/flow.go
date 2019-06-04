@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -19,8 +20,8 @@ type Flow struct {
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt"`
 	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary"`
 	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt"`
-	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn"`
-	Pointer             string    `gorm:"Column:pointer" json:"-"`
+	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn"` // 在哪里触发
+	Pointer             string    `gorm:"Column:pointer" json:"-"`         // 创建后的cronJob在内存里的ID
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
 	Tags  string `gorm:"Column:tags;type:text" json:"tags"`
@@ -37,5 +38,6 @@ func (Flow) TableName() string {
 
 // Create a new Flow
 func (f *Flow) Create() *gorm.DB {
+	fmt.Println(DatabaseEngine.DB().Ping())
 	return DatabaseEngine.Create(f)
 }

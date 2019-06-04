@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"log"
 	"strings"
 
@@ -33,12 +32,10 @@ func init() {
 }
 
 func engineInit() (err error) {
-	fmt.Println("123")
-	fmt.Println(utils.FlnowConf.Database.Type)
-	fmt.Println("456")
 	DatabaseEngine, err = gorm.Open(strings.ToLower(utils.FlnowConf.Database.Type), utils.FlnowConf.Database.Connection)
 	DatabaseEngine.LogMode(true)
-	defer DatabaseEngine.Close()
+
+	//defer DatabaseEngine.Close()
 	if err != nil {
 		return err
 	}
