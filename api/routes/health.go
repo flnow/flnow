@@ -3,10 +3,10 @@ package routes
 import (
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 )
 
 // HealthCheck to know is http server alive
-func HealthCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "flnow")
+func HealthCheck(c *gin.Context) {
+	c.String(http.StatusOK, "flnow")
 }

@@ -19,9 +19,9 @@ type Flow struct {
 	NodeCount           int       `gorm:"Column:nodeCount" json:"nodeCount"`
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt"`
 	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary"`
-	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt"`
-	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn"` // 在哪里触发
-	Pointer             string    `gorm:"Column:pointer" json:"-"`         // 创建后的cronJob在内存里的ID
+	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt"` // 在哪个worker上被执行
+	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn"`     // 在哪里触发，slave
+	Pointer             string    `gorm:"Column:pointer" json:"-"`             // 创建后的cronJob在内存里的ID
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
 	Tags  string `gorm:"Column:tags;type:text" json:"tags"`
@@ -30,6 +30,10 @@ type Flow struct {
 	CreatedAt time.Time `gorm:"Column:createdAt" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"Column:updatedAt" json:"updatedAt"`
 }
+
+// // FlowView is the model-view of Flow
+// type FlowView struct {
+// }
 
 // TableName of Flow entity for ORM
 func (Flow) TableName() string {

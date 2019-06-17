@@ -6,19 +6,17 @@ import (
 	"time"
 
 	"github.com/flnow/flnow/models"
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 )
 
 // CreateFlow to create flow data
-func CreateFlow(c echo.Context) (err error) {
-	fmt.Println("11111")
+func CreateFlow(c *gin.Context) {
 	// 数据验证 && 数据创建 && 跳转到详情页
 	flow := new(models.Flow)
-	if err = c.Bind(flow); err != nil {
+	if err := c.Bind(flow); err != nil {
 		//TODO: sth wrong
-		return c.JSON(http.StatusInternalServerError, err)
+		c.JSON(http.StatusInternalServerError, err)
 	}
-	fmt.Println("222222")
 
 	flow.Owner = 1
 	flow.State = "CREATED"
@@ -29,8 +27,8 @@ func CreateFlow(c echo.Context) (err error) {
 	flow.CreatedAt = time.Now()
 	flow.UpdatedAt = time.Now()
 	fmt.Println(flow)
-	fmt.Println("33333")
+
 	flow.Create()
-	fmt.Println("44444")
-	return c.JSON(http.StatusOK, flow)
+
+	c.JSON(http.StatusOK, flow)
 }

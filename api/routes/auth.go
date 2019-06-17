@@ -1,8 +1,8 @@
 package routes
 
-import "github.com/labstack/echo/v4"
+import "github.com/gin-gonic/gin"
 
-func Authenticate(c echo.Context) error {
+func Authenticate(c *gin.Context) {
 
-	return nil
+	// return nil
 }

@@ -14,10 +14,10 @@ settings:
       name: .r.errors.log
   legacy:
     force: false
-    interval: 0s
+    interval: 1s
 schema:
   - name: Flnow
-    path: /mnt/c/Users/guotu/desktop/develop/go/src/github.com/flnow/flnow
+    path: /Users/kumamon/go/src/github.com/flnow/flnow
     commands:
       fmt:
         status: true
