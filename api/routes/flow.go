@@ -9,8 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateFlow to create flow data
-func CreateFlow(c *gin.Context) {
+// FlowCreate to create flow data
+func FlowCreate(c *gin.Context) {
+	fmt.Println("Flow create")
 	// 数据验证 && 数据创建 && 跳转到详情页
 	flow := new(models.Flow)
 	if err := c.Bind(flow); err != nil {
@@ -21,7 +22,7 @@ func CreateFlow(c *gin.Context) {
 	flow.Owner = 1
 	flow.State = "CREATED"
 	flow.NodeCount = 10
-	flow.RunAt = "ALL"
+	flow.RunAt = "ANY"
 	flow.Pointer = "-1"
 	flow.LastExecutedAt = time.Now()
 	flow.CreatedAt = time.Now()
@@ -31,4 +32,10 @@ func CreateFlow(c *gin.Context) {
 	flow.Create()
 
 	c.JSON(http.StatusOK, flow)
+}
+
+// Flows is the data list
+func Flows(c *gin.Context) {
+	fmt.Println("Flow list")
+
 }

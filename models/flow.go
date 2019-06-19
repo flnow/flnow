@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -42,6 +41,12 @@ func (Flow) TableName() string {
 
 // Create a new Flow
 func (f *Flow) Create() *gorm.DB {
-	fmt.Println(DatabaseEngine.DB().Ping())
 	return DatabaseEngine.Create(f)
+}
+
+// List flows
+func (f *Flow) List() []Flow {
+	flows := make([]Flow, 0)
+	DatabaseEngine.Find(&flows)
+	return flows
 }

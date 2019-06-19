@@ -16,8 +16,8 @@ func init() {
 func Run() {
 	r := gin.Default()
 	r.GET("/", hello)
-	r.POST("/flows/create", routes.CreateFlow)
-	r.Run(":8080")
+	r.POST("/flows/create", routes.FlowCreate)
+	r.Run(":8081")
 }
 
 // Handler
