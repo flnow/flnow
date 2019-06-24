@@ -4,7 +4,7 @@ import (
 	// "gopkg.in/robfig/cron.v3"
 	"fmt"
 
-	"github.com/flnow/flnow/api"
+	"github.com/flnow/server/api"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/flnow/flnow
+module github.com/flnow/server
 
 go 1.12
 

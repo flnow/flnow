@@ -10,7 +10,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres" // For postgres supported
 	//_ "github.com/jinzhu/gorm/dialects/sqlite"   // For sqlite supported
 
-	"github.com/flnow/flnow/utils"
+	"github.com/flnow/server/utils"
 )
 
 var (

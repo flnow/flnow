@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/flnow/flnow/models"
+	"github.com/flnow/server/models"
 	"github.com/gin-gonic/gin"
 )
 
