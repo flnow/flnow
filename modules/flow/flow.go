@@ -7,8 +7,8 @@ import (
 // Flow entity
 type Flow struct {
 	ID                  int       `gorm:"Column:id;PRIMARY_KEY;AUTO_INCREMENT" json:"id"`
-	Name                string    `gorm:"Column:name;NOT NULL" json:"name"`
-	TriggerType         string    `gorm:"Column:triggerType;NOT NULL" json:"triggerType"`
+	Name                string    `gorm:"Column:name;NOT NULL" json:"name" from:"name"`
+	TriggerType         string    `gorm:"Column:triggerType;NOT NULL" json:"triggerType" from:"triggerType"`
 	CronExpression      string    `gorm:"Column:cronExpression;type:varchar(50)" json:"cron"`
 	CronTimeZone        string    `gorm:"Column:cronTimeZone;type:varchar(50)" json:"cronTimeZone"`
 	State               string    `gorm:"Column:state;size:50" json:"state"`
