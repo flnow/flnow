@@ -17,7 +17,7 @@ settings:
     interval: 1s
 schema:
   - name: Flnow
-    path: /Users/kumamon/go/src/github.com/flnow/flnow
+    path: /Users/kumamon/go/src/github.com/flnow/server
     commands:
       fmt:
         status: true
