@@ -13,6 +13,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"    // For mysql supported
 	_ "github.com/jinzhu/gorm/dialects/postgres" // For postgres supported
 
+	"github.com/flnow/server/modules/auth"
 	"github.com/flnow/server/utils"
 )
 
@@ -36,6 +37,10 @@ func Run() {
 	r.GET("/flows/:flowID", flow.Detail(db))
 	r.POST("/flows/update", flow.Update(db))
 	r.GET("/flows", flow.List(db))
+
+	authMid := auth.FlnowAuthMiddware()
+
+	r.POST("/login", authMid.LoginHandler)
 
 	r.Run(":8081")
 }
