@@ -35,6 +35,7 @@ func Run() {
 	r.POST("/flows/create", flow.Create(db))
 	r.GET("/flows/:flowID", flow.Detail(db))
 	r.POST("/flows/update", flow.Update(db))
+	r.GET("/flows", flow.List(db))
 
 	r.Run(":8081")
 }

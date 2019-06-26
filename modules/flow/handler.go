@@ -52,3 +52,13 @@ func Update(db *gorm.DB) gin.HandlerFunc {
 		c.JSON(http.StatusOK, flow)
 	}
 }
+
+// List of flows
+func List(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("Flow List...")
+		flows := make([]Flow, 0)
+		db.Find(&flows)
+		c.JSON(http.StatusOK, flows)
+	}
+}
