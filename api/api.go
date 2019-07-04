@@ -32,7 +32,7 @@ func Run() {
 	}
 
 	r := gin.Default()
-	r.GET("/", hello)
+
 	r.POST("/flows/create", flow.Create(db))
 	r.GET("/flows/:flowID", flow.Detail(db))
 	r.POST("/flows/update", flow.Update(db))
@@ -41,6 +41,10 @@ func Run() {
 	authMid := auth.FlnowAuthMiddware()
 
 	r.POST("/login", authMid.LoginHandler)
+	r.Use(authMid.MiddlewareFunc())
+	{
+		r.GET("/", hello)
+	}
 
 	r.Run(":8081")
 }
