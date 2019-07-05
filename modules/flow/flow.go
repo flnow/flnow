@@ -16,9 +16,10 @@ type Flow struct {
 	NodeCount           int       `gorm:"Column:nodeCount" json:"nodeCount" form:"nodeCount"`
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt" form:"lastExecutedAt"`
 	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary" form:"lastExecutedSummary"`
-	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"` // 在哪个worker上被执行
-	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`  // 在哪里触发，slave
-	Pointer             string    `gorm:"Column:pointer" json:"-"`                          // 创建后的cronJob在内存里的ID
+	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"`                         // 在哪个worker上被执行
+	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`                          // 在哪里触发，slave
+	Pointer             string    `gorm:"Column:pointer" json:"-"`                                                  // 创建后的cronJob在内存里的ID
+	Configuration       string    `gorm:"Column:configuration;type:Text" json:"configuration" form:"configuration"` // 具体配置项
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
 	Tags  string `gorm:"Column:tags;type:text" json:"tags"`
@@ -26,6 +27,16 @@ type Flow struct {
 	Comment   string    `gorm:"Column:comment;type:text" json:"comment"`
 	CreatedAt time.Time `gorm:"Column:createdAt" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"Column:updatedAt" json:"updatedAt"`
+}
+
+// Node entity
+type Node struct {
+	ParentID     int       `json:"parentId"`
+	PluginID     int       `json:"pluginId"`
+	Sequence     int       `json:"sequence"`
+	RunCondition string    `json:"runCondition"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 // TableName of Flow entity for ORM

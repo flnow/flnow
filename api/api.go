@@ -38,6 +38,8 @@ func Run() {
 	r.POST("/flows/update", flow.Update(db))
 	r.GET("/flows", flow.List(db))
 
+	// r.POST("/nodes/create", node.Create(db))
+
 	authMid := auth.FlnowAuthMiddware()
 
 	r.POST("/login", authMid.LoginHandler)
