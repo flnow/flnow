@@ -18,6 +18,15 @@ func Create(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		flow.initialize()
+		if !db.HasTable(&Flow{}) {
+			db.CreateTable(&Flow{})
+		}
+		// var pl Pipeline
+		// json.Unmarshal([]byte(flow.Pipeline), &pl)
+
+		// var pipeline Pipeline
+		// pipeline.Unmarshal(flow.Pipeline)
+
 		db.Create(&flow)
 
 		c.JSON(http.StatusOK, flow)

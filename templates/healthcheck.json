@@ -1,0 +1,46 @@
+{
+    "plugin": "http",
+    "runCondition": "ANY",
+    "configuration": {
+        "a": "1",
+        "b": "2"
+    },
+    "success": {
+        "plugin": "http",
+        "runCondition": "ANY",
+        "configuration": {
+            "a": "1",
+            "b": "2"
+        },
+        "success": {
+            "plugin": "http",
+            "runCondition": "ANY",
+            "configuration": {
+                "a": "1",
+                "b": "2"
+            }
+        }
+    },
+    "failure": {
+        "plugin": "http",
+        "runCondition": "ANY",
+        "configuration": {
+            "a": "1",
+            "b": "2"
+        },
+        "success": {},
+        "failure": {},
+        "any": {}
+    },
+    "any": {
+        "plugin": "http",
+        "runCondition": "ANY",
+        "configuration": {
+            "a": "1",
+            "b": "2"
+        },
+        "success": {},
+        "failure": {},
+        "any": {}
+    }
+}
