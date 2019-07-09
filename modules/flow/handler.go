@@ -1,6 +1,7 @@
 package flow
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -27,8 +28,23 @@ func Create(db *gorm.DB) gin.HandlerFunc {
 		// var pipeline Pipeline
 		// pipeline.Unmarshal(flow.Pipeline)
 
-		db.Create(&flow)
+		pipe := Pipeline{}
+		if flow.Pipeline != "{}" && len(flow.Pipeline) > 0 {
+			if err := json.Unmarshal([]byte(flow.Pipeline), &pipe); err != nil {
+				fmt.Println(err)
+			}
+		}
+		transaction := db.Begin()
 
+		if !pipe.IsZero() {
+			// not zero value pipeline
+			fmt.Println("un-zero pipeline configuration...")
+
+		}
+
+		transaction.Create(&flow)
+
+		transaction.Commit()
 		c.JSON(http.StatusOK, flow)
 	}
 }

@@ -16,10 +16,10 @@ type Flow struct {
 	NodeCount           int       `gorm:"Column:nodeCount" json:"nodeCount" form:"nodeCount"`
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt" form:"lastExecutedAt"`
 	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary" form:"lastExecutedSummary"`
-	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"`          // 在哪个worker上被执行
-	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`           // 在哪里触发，slave
-	Pointer             string    `gorm:"Column:pointer" json:"-"`                                   // 创建后的cronJob在内存里的ID
-	Pipeline            Pipeline  `gorm:"Column:pipeline;type:text" json:"pipeline" form:"pipeline"` // 具体配置项
+	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"`                     // 在哪个worker上被执行
+	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`                      // 在哪里触发，slave
+	Pointer             string    `gorm:"Column:pointer" json:"-"`                                              // 创建后的cronJob在内存里的ID
+	Pipeline            string    `gorm:"Column:pipeline;type:text;default:{}" json:"pipeline" form:"pipeline"` // 具体配置项
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
 	Tags  string `gorm:"Column:tags;type:text" json:"tags" form:"tags"`
@@ -72,38 +72,13 @@ type Pipeline struct {
 	Any           *Pipeline         `json:"any"`     // Another pipeline node
 }
 
-// // Unmarshal to Pipeline from string
-// func (p *Pipeline) Unmarshal(from string) (err error) {
-// 	err = json.Unmarshal([]byte(from), p)
-
-// 	successString, successTp := p.Success.(string)
-// 	failureString, failureTp := p.Failure.(string)
-// 	anyString, anyTp := p.Any.(string)
-
-// 	fmt.Println("p.Success = ", successString, ", Type = ", successTp)
-// 	fmt.Println("p.Failure = ", failureString, ", failureTp = ", failureTp)
-// 	fmt.Println("p.Any = ", anyString, ", anyTp = ", anyTp)
-
-// 	if p.Success != nil && successString != "{}" {
-// 		// successFrom := p.Success.(string)
-// 		var successPipelineNode Pipeline
-// 		successPipelineNode.Unmarshal(successString)
-// 		p.Success = successPipelineNode
-// 	}
-// 	if p.Failure != nil && failureString != "{}" {
-// 		// failureFrom := p.Failure.(string)
-// 		var failurePipelineNode Pipeline
-// 		failurePipelineNode.Unmarshal(failureString)
-// 		p.Failure = failurePipelineNode
-// 	}
-// 	if p.Any != nil && anyString != "{}" {
-// 		// anyFrom := p.Any.(string)
-// 		var anyPipelineNode Pipeline
-// 		anyPipelineNode.Unmarshal(anyString)
-// 		p.Any = anyPipelineNode
-// 	}
-// 	return err
-// }
+// IsZero method to check the pipeline instance zero value or not
+func (p *Pipeline) IsZero() bool {
+	if p.Plugin == "" {
+		return true
+	}
+	return false
+}
 
 // initialize the flow fields which need be initialized
 func (f *Flow) initialize() {
