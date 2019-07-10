@@ -2,11 +2,13 @@ package flow
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // Flow entity
 type Flow struct {
-	ID                  int       `gorm:"Column:id;PRIMARY_KEY;AUTO_INCREMENT" json:"id" form:"id"`
+	ID                  string    `gorm:"Column:id;PRIMARY_KEY" json:"id" form:"id"`
 	Name                string    `gorm:"Column:name;NOT NULL" json:"name" form:"name"`
 	TriggerType         string    `gorm:"Column:triggerType;NOT NULL" json:"triggerType" form:"triggerType"`
 	CronExpression      string    `gorm:"Column:cronExpression;type:varchar(50)" json:"cron" form:"cron"`
@@ -37,7 +39,7 @@ func (Flow) TableName() string {
 // Node entity
 type Node struct {
 	ID           string `json:"id" gorm:"column:id;PRIMARY_KEY"`
-	FlowID       int    `json:"flowID" gorm:"column:flowID"`
+	FlowID       string `json:"flowID" gorm:"column:flowID"`
 	ParentID     string `json:"parentID" gorm:"column:parentID"`
 	Plugin       string `json:"plugin" gorm:"column:plugin"`
 	Sequence     int    `json:"sequence" gorm:"column:sequence"`
@@ -80,9 +82,36 @@ func (p *Pipeline) IsZero() bool {
 	return false
 }
 
+// ToRelational method to convert Pipeline instance to Node and NodeConfiguration
+func (p *Pipeline) ToRelational(flow, parent, condition string, sequence int) {
+	if len(condition) == 0 {
+		condition = "ANY"
+	}
+	currNode := Node{
+		ID:           uuid.New().String(),
+		FlowID:       flow,
+		Plugin:       p.Plugin,
+		Sequence:     1,
+		RunCondition: "ANY",
+	}
+
+	if !p.Success.IsZero() {
+		p.Success.ToRelational(flow, currNode.ID, "SUCCESS", currNode.Sequence+1)
+	}
+	if !p.Failure.IsZero() {
+		p.Failure.ToRelational(flow, currNode.ID, "FAILURE", currNode.Sequence+1)
+	}
+	if !p.Any.IsZero() {
+		p.Any.ToRelational(flow, currNode.ID, "ANY", currNode.Sequence+1)
+	}
+}
+
 // initialize the flow fields which need be initialized
 func (f *Flow) initialize() {
 	initTime := time.Now()
+	if len(f.ID) == 0 {
+		f.ID = uuid.New().String()
+	}
 	f.Owner = 1
 	f.State = "CREATED"
 	f.NodeCount = 0

@@ -41,8 +41,19 @@ func Create(db *gorm.DB) gin.HandlerFunc {
 			// not zero value pipeline
 			fmt.Println("un-zero pipeline configuration...")
 			// Add more steps to transaction
-			id := uuid.New()
+			id := uuid.New().String()
 			fmt.Println(id)
+			rootNode := Node{
+				ID:       uuid.New().String(),
+				FlowID:   flow.ID,
+				Plugin:   pipe.Plugin,
+				Sequence: 0,
+			}
+			rootNode.FlowID = id
+			rootNode.Plugin = pipe.Plugin
+			rootNode.Sequence = 0
+			rootNode.RunCondition = "ANY"
+
 		}
 
 		transaction.Create(&flow)
@@ -58,7 +69,7 @@ func Detail(db *gorm.DB) gin.HandlerFunc {
 		fmt.Println("Flow Detail...")
 		flow := new(Flow)
 		db.Where("id = ?", c.Param("flowID")).First(flow)
-		if flow.ID == 0 {
+		if flow.ID == "" {
 			c.JSON(http.StatusOK, gin.H{})
 			return
 		}
