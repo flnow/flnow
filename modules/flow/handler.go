@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 )
 
@@ -39,7 +40,9 @@ func Create(db *gorm.DB) gin.HandlerFunc {
 		if !pipe.IsZero() {
 			// not zero value pipeline
 			fmt.Println("un-zero pipeline configuration...")
-
+			// Add more steps to transaction
+			id := uuid.New()
+			fmt.Println(id)
 		}
 
 		transaction.Create(&flow)
