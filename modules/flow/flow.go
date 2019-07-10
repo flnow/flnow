@@ -83,27 +83,51 @@ func (p *Pipeline) IsZero() bool {
 }
 
 // ToRelational method to convert Pipeline instance to Node and NodeConfiguration
-func (p *Pipeline) ToRelational(flow, parent, condition string, sequence int) {
-	if len(condition) == 0 {
+func (p *Pipeline) ToRelational(flow, parent, condition string, sequence int) (nodes []Node, configs []NodeConfiguration) {
+	if len(parent) == 0 {
+		// root/entry node
 		condition = "ANY"
 	}
 	currNode := Node{
 		ID:           uuid.New().String(),
 		FlowID:       flow,
+		ParentID:     parent,
 		Plugin:       p.Plugin,
-		Sequence:     1,
-		RunCondition: "ANY",
+		Sequence:     sequence,
+		RunCondition: condition,
 	}
 
+	currConfigs := []NodeConfiguration{}
+
+	for confK, confV := range p.Configuration {
+		currConfigs = append(currConfigs, NodeConfiguration{
+			ID:     uuid.New().String(),
+			NodeID: currNode.ID,
+			Key:    confK,
+			Value:  confV,
+		})
+	}
+
+	nodes = append(nodes, currNode)
+	configs = append(configs, currConfigs...)
+
 	if !p.Success.IsZero() {
-		p.Success.ToRelational(flow, currNode.ID, "SUCCESS", currNode.Sequence+1)
+		successNodes, successConfigs := p.Success.ToRelational(flow, currNode.ID, "SUCCESS", currNode.Sequence+1)
+		nodes = append(nodes, successNodes...)
+		configs = append(configs, successConfigs...)
 	}
 	if !p.Failure.IsZero() {
-		p.Failure.ToRelational(flow, currNode.ID, "FAILURE", currNode.Sequence+1)
+		failureNodes, failureConfigs := p.Failure.ToRelational(flow, currNode.ID, "FAILURE", currNode.Sequence+1)
+		nodes = append(nodes, failureNodes...)
+		configs = append(configs, failureConfigs...)
 	}
 	if !p.Any.IsZero() {
-		p.Any.ToRelational(flow, currNode.ID, "ANY", currNode.Sequence+1)
+		anyNodes, anyConfigs := p.Any.ToRelational(flow, currNode.ID, "ANY", currNode.Sequence+1)
+		nodes = append(nodes, anyNodes...)
+		configs = append(configs, anyConfigs...)
 	}
+
+	return
 }
 
 // initialize the flow fields which need be initialized
