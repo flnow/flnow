@@ -41,12 +41,15 @@ func Create(db *gorm.DB) gin.HandlerFunc {
 			fmt.Println("un-zero pipeline configuration...")
 			// Add more steps to transaction
 			nodes, nodeConfigs := pipe.ToRelational(flow.ID, "", "", 1)
-			fmt.Println(nodes)
-			fmt.Println(nodeConfigs)
+
+			bNodes, _ := json.Marshal(nodes)
+			bConfigs, _ := json.Marshal(nodeConfigs)
+			fmt.Println(string(bNodes))
+			fmt.Println(string(bConfigs))
 		}
-
+		transaction.LogMode(true)
 		transaction.Create(&flow)
-
+		transaction.LogMode(false)
 		transaction.Commit()
 		c.JSON(http.StatusOK, flow)
 	}

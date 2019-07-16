@@ -18,10 +18,10 @@ type Flow struct {
 	NodeCount           int       `gorm:"Column:nodeCount" json:"nodeCount" form:"nodeCount"`
 	LastExecutedAt      time.Time `gorm:"Column:lastExecutedAt" json:"lastExecutedAt" form:"lastExecutedAt"`
 	LastExecutedSummary string    `gorm:"Column:lastExecutedSummary;type:text" json:"lastExecutedSummary" form:"lastExecutedSummary"`
-	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"`                     // 在哪个worker上被执行
-	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`                      // 在哪里触发，slave
-	Pointer             string    `gorm:"Column:pointer" json:"-"`                                              // 创建后的cronJob在内存里的ID
-	Pipeline            string    `gorm:"Column:pipeline;type:text;default:{}" json:"pipeline" form:"pipeline"` // 具体配置项
+	RunAt               string    `gorm:"Column:runAt;type:text" json:"runAt" form:"runAt"`          // 在哪个worker上被执行
+	HostedOn            string    `gorm:"Column:hostedOn" json:"hostedOn" form:"hostedOn"`           // 在哪里触发，slave
+	Pointer             string    `gorm:"Column:pointer" json:"-"`                                   // 创建后的cronJob在内存里的ID
+	Pipeline            string    `gorm:"Column:pipeline;type:text" json:"pipeline" form:"pipeline"` // 具体配置项
 
 	Owner int    `gorm:"Column:owner" json:"owner"`
 	Tags  string `gorm:"Column:tags;type:text" json:"tags" form:"tags"`
@@ -76,7 +76,7 @@ type Pipeline struct {
 
 // IsZero method to check the pipeline instance zero value or not
 func (p *Pipeline) IsZero() bool {
-	if p.Plugin == "" {
+	if p != nil && p.Plugin == "" {
 		return true
 	}
 	return false
@@ -111,17 +111,17 @@ func (p *Pipeline) ToRelational(flow, parent, condition string, sequence int) (n
 	nodes = append(nodes, currNode)
 	configs = append(configs, currConfigs...)
 
-	if !p.Success.IsZero() {
+	if p.Success != nil && !p.Success.IsZero() {
 		successNodes, successConfigs := p.Success.ToRelational(flow, currNode.ID, "SUCCESS", currNode.Sequence+1)
 		nodes = append(nodes, successNodes...)
 		configs = append(configs, successConfigs...)
 	}
-	if !p.Failure.IsZero() {
+	if p.Failure != nil && !p.Failure.IsZero() {
 		failureNodes, failureConfigs := p.Failure.ToRelational(flow, currNode.ID, "FAILURE", currNode.Sequence+1)
 		nodes = append(nodes, failureNodes...)
 		configs = append(configs, failureConfigs...)
 	}
-	if !p.Any.IsZero() {
+	if p.Any != nil && !p.Any.IsZero() {
 		anyNodes, anyConfigs := p.Any.ToRelational(flow, currNode.ID, "ANY", currNode.Sequence+1)
 		nodes = append(nodes, anyNodes...)
 		configs = append(configs, anyConfigs...)
